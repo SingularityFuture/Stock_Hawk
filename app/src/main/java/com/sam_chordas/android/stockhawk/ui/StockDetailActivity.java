@@ -30,9 +30,8 @@ import java.util.ArrayList;
 
 
 public class StockDetailActivity extends AppCompatActivity {
-    //I couldn't find a way to store this string in resources and have it work as a static final string
     public static final String ARG_SYMBOL = "ARG_SYMBOL";
-    private String symbol = "GOOG";
+    private String symbol;// = "GOOG";
     private StockHistoryData historyData;
     private LineChart mChart;
 

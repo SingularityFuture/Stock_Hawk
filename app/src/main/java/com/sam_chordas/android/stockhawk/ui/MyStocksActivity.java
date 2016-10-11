@@ -62,7 +62,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
     sendBroadcast(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
 
-
     NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
     isConnected = activeNetwork != null &&
         activeNetwork.isConnectedOrConnecting();
@@ -87,12 +86,20 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override public void onItemClick(View v, int position) {
-                //TODO:
-                // do something on item click
+                String symbol="";
+                  Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
+                          new String[] { QuoteColumns._ID }, QuoteColumns._ID + "= ?",
+                          new String[] {Integer.toString(position)}, null);
+                  if(c.moveToFirst()) {
+                      symbol = c.getString(c.getColumnIndex(QuoteColumns.SYMBOL));
+                      //Toast.makeText(getApplicationContext(), "GooG", Toast.LENGTH_SHORT).show();
+                  }
+
+                  Intent intent = new Intent(getApplicationContext(), StockDetailActivity.class).putExtra("ARG_SYMBOL", symbol);
+                  startActivity(intent);
               }
             }));
     recyclerView.setAdapter(mCursorAdapter);
-
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.attachToRecyclerView(recyclerView);
