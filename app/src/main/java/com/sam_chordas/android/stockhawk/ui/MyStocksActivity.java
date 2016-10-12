@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -86,15 +87,12 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override public void onItemClick(View v, int position) {
-                String symbol="";
+                  String symbol="";
                   Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-                          new String[] { QuoteColumns._ID }, QuoteColumns._ID + "= ?",
-                          new String[] {Integer.toString(position)}, null);
-                  if(c.moveToFirst()) {
-                      symbol = c.getString(c.getColumnIndex(QuoteColumns.SYMBOL));
-                      //Toast.makeText(getApplicationContext(), "GooG", Toast.LENGTH_SHORT).show();
-                  }
-
+                          new String[] { QuoteColumns.SYMBOL}, QuoteColumns._ID + "= ?",
+                          new String[] {Integer.toString(position+1)}, null);
+                  c.moveToFirst();
+                  symbol = c.getString(c.getColumnIndex(QuoteColumns.SYMBOL));
                   Intent intent = new Intent(getApplicationContext(), StockDetailActivity.class).putExtra("ARG_SYMBOL", symbol);
                   startActivity(intent);
               }
