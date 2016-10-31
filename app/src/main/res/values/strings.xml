@@ -1,47 +1,53 @@
 <resources>
-    <string name="app_name">Stock Hawk</string>
+    <string name="app_name" translatable="true">Stock Hawk</string>
 
-    <string name="app_intent_service_name" translatable="false">Stock Intent Service</string>
-    <string name="app_intent_service_extra_tag" translatable="false">tag</string>
-    <string name="app_intent_service_extra_symbol" translatable="false">symbol</string>
-    <string name="app_intent_service_extra_init" translatable="false">init</string>
-    <string name="app_intent_service_extra_add" translatable="false">add</string>
-    <string name="app_periodic_task_tag_periodic" translatable="false">periodic</string>
+    <string name="app_intent_service_name" translatable="true">Stock Intent Service</string>
+    <string name="app_intent_service_extra_tag" translatable="true">tag</string>
+    <string name="app_intent_service_extra_symbol" translatable="true">symbol</string>
+    <string name="app_intent_service_extra_init" translatable="true">init</string>
+    <string name="app_intent_service_extra_add" translatable="true">add</string>
+    <string name="app_periodic_task_tag_periodic" translatable="true">periodic</string>
 
 
-    <string name="action_example">Example action</string>
+    <string name="action_example" translatable="true">Example action</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="action_change_units">Change Units</string>
-    <string name="symbol_search">Symbol Search</string>
-    <string name="content_test">Search for one or more Stock Symbols separated by a space.</string>
-    <string name="input_hint" translatable="false">FB</string>
-    <string name="input_prefill"></string>
-    <string name="network_toast">Uh-oh! This app requires an internet connection</string>
-    <string name="error_stock_search">The stock you searched for is invalid.</string>
+    <string name="action_settings" translatable="true">Settings</string>
+    <string name="action_change_units" translatable="true">Change Units</string>
+    <string name="symbol_search" translatable="true">Symbol Search</string>
+    <string name="content_test" translatable="true">Search for one or more Stock Symbols separated by a space.</string>
+    <string name="input_hint" translatable="true">FB</string>
+    <string name="input_prefill" translatable="true"></string>
+    <string name="network_toast" translatable="true">Uh-oh! This app requires an internet connection</string>
+    <string name="error_stock_search" translatable="true">The stock you searched for is invalid.</string>
 
-    <string name="button_add_stock">Add a symbol to your list of stocks.</string>
-    <string name="title_activity_stock_detail">StockDetailActivity</string>
+    <string name="button_add_stock" translatable="true">Add a symbol to your list of stocks.</string>
+    <string name="title_activity_stock_detail" translatable="true">StockDetailActivity</string>
 
-    <string name="stock_already_exists">This stock is already saved!</string>
+    <string name="stock_already_exists" translatable="true">This stock is already saved!</string>
 
-    <string name="chart_description">Line chart displaying one month old historical data for the symbol %1$s.</string>
+    <string name="chart_description" translatable="true">Line chart displaying one month old historical data for the symbol %1$s.</string>
 
-    <string name="history_url" translatable="false">http://chartapi.finance.yahoo.com/instrument/1.0/%1$s/chartdata;type=quote;range=1m/json</string>
-    <string name="callback_to_be_removed" translatable="false">finance_charts_json_callback(</string>
+    <string name="history_url" translatable="true">http://chartapi.finance.yahoo.com/instrument/1.0/%1$s/chartdata;type=quote;range=1m/json</string>
+    <string name="callback_to_be_removed" translatable="true">finance_charts_json_callback(</string>
 
-    <string name="key_series" translatable="false">series</string>
-    <string name="key_open" translatable="false">open</string>
-    <string name="key_close" translatable="false">close</string>
-    <string name="key_query" translatable="false">query</string>
-    <string name="key_count" translatable="false">count</string>
-    <string name="key_results" translatable="false">results</string>
-    <string name="key_quote" translatable="false">quote</string>
-    <string name="key_ask" translatable="false">ask</string>
+    <string name="key_series" translatable="true">series</string>
+    <string name="key_open" translatable="true">open</string>
+    <string name="key_close" translatable="true">close</string>
+    <string name="key_query" translatable="true">query</string>
+    <string name="key_count" translatable="true">count</string>
+    <string name="key_results" translatable="true">results</string>
+    <string name="key_quote" translatable="true">quote</string>
+    <string name="key_ask" translatable="true">ask</string>
 
-    <string name="appwidget_text" translatable="false">StockHawk</string>
-    <string name="title_widget_today" translatable="false">StockHawk</string>
+    <string name="appwidget_text" translatable="true">StockHawk</string>
+    <string name="title_widget_today" translatable="true">StockHawk</string>
 
-    <string name="legend_chart_open">Opening Values</string>
-    <string name="legend_chart_close">Closing Values</string>
+    <string name="legend_chart_open" translatable="true">Opening Values</string>
+    <string name="legend_chart_close" translatable="true">Closing Values</string>
+
+    <string name="AddStock" translatable="true">Add Stock</string>
+    <string name="LineChart" translatable="true">Line Chart</string>
+    <string name="PercentChange" translatable="true">Percent Change</string>
+    <string name="BidPrice" translatable="true">Bid Price</string>
+    <string name="StockSymbol" translatable="true">Stock Symbol</string>
 </resources>
