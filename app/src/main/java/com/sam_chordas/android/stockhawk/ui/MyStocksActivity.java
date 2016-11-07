@@ -1,13 +1,16 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -53,6 +56,16 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   boolean isConnected;
+
+  private BroadcastReceiver  BReceiver = new BroadcastReceiver(){
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      int sentResult=intent.getIntExtra("result",0);
+      if(sentResult==GcmNetworkManager.RESULT_FAILURE) {
+        Toast.makeText(getApplicationContext(), "Stock not found", Toast.LENGTH_SHORT).show();
+      }
+    }
+  };
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +181,12 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public void onResume() {
     super.onResume();
     getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+    LocalBroadcastManager.getInstance(this).registerReceiver(BReceiver, new IntentFilter("message"));
+  }
+
+  protected void onPause (){
+    super.onPause();
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(BReceiver);
   }
 
   public void networkToast(){

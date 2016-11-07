@@ -1,5 +1,6 @@
 package com.sam_chordas.android.stockhawk.service;
 
+import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentValues;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,6 +19,8 @@ import com.google.android.gms.gcm.TaskParams;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.Utils;
+import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
+import com.sam_chordas.android.stockhawk.ui.StockDetailActivity;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -24,6 +28,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+
+import java.lang.Runnable;
 
 /**
  * Created by sam_chordas on 9/30/15.
@@ -130,9 +136,21 @@ public class StockTaskService extends GcmTaskService{
           batchArray=mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
               Utils.quoteJsonToContentVals(getResponse));
           int temp1=1;
-          if(batchArray[0].count==null){
-            Toast.makeText(mContext,"No stock found",
-                    Toast.LENGTH_SHORT).show();
+          if(batchArray.length==0){
+            result = GcmNetworkManager.RESULT_FAILURE;
+/*            final Context temp=this;
+            Handler handler=new Handler();
+            handler.post(new Runnable() {
+              @Override
+              public void run() {
+                System.out.println("I'm in handler");
+                //Context temp=this;
+                Toast.makeText(getApplicationContext(), "Stock not found",Toast.LENGTH_SHORT).show();
+              }
+            });*/
+
+/*            Toast.makeText(StockTaskService.this,"No stock found",
+                    Toast.LENGTH_LONG).show();*/
           }
         }catch (RemoteException | OperationApplicationException e){
           Log.e(LOG_TAG, "Error applying batch insert", e);

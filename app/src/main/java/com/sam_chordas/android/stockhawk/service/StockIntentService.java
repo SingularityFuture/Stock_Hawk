@@ -3,6 +3,7 @@ package com.sam_chordas.android.stockhawk.service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import com.google.android.gms.gcm.TaskParams;
 
@@ -10,6 +11,8 @@ import com.google.android.gms.gcm.TaskParams;
  * Created by sam_chordas on 10/1/15.
  */
 public class StockIntentService extends IntentService {
+
+  private int result;
 
   public StockIntentService(){
     super(StockIntentService.class.getName());
@@ -28,6 +31,17 @@ public class StockIntentService extends IntentService {
     }
     // We can call OnRunTask from the intent service to force it to run immediately instead of
     // scheduling a task.
-    stockTaskService.onRunTask(new TaskParams(intent.getStringExtra("tag"), args));
+    result=stockTaskService.onRunTask(new TaskParams(intent.getStringExtra("tag"), args));
+    Intent intent_result = new Intent("message"); //put the same message as in the filter you used in the activity when registering the receiver
+    intent_result.putExtra("result", result);
+    LocalBroadcastManager.getInstance(this).sendBroadcast(intent_result);
   }
+
+/*  private void sendBroadcast (boolean success){
+    Intent intent = new Intent("message"); //put the same message as in the filter you used in the activity when registering the receiver
+    intent.putExtra("result", result);
+    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+  }*/
+
+
 }
