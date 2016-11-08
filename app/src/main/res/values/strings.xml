@@ -47,6 +47,7 @@
 
     <string name="AddStock" translatable="true">Add Stock</string>
     <string name="LineChart" translatable="true">Line Chart</string>
+    <string name="LineGraph" translatable="true">Line Graph</string>
     <string name="PercentChange" translatable="true">Percent Change</string>
     <string name="BidPrice" translatable="true">Bid Price</string>
     <string name="StockSymbol" translatable="true">Stock Symbol</string>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -92,8 +93,13 @@ public class StockWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public int getViewTypeCount() {
-                return 1;
+                return getCount();
             }
+
+/*            @Override
+            public int getItemViewType(int position){
+                  return position;
+            }*/
 
             @Override
             public long getItemId(int position) {

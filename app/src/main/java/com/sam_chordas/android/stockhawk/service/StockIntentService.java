@@ -36,12 +36,4 @@ public class StockIntentService extends IntentService {
     intent_result.putExtra("result", result);
     LocalBroadcastManager.getInstance(this).sendBroadcast(intent_result);
   }
-
-/*  private void sendBroadcast (boolean success){
-    Intent intent = new Intent("message"); //put the same message as in the filter you used in the activity when registering the receiver
-    intent.putExtra("result", result);
-    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-  }*/
-
-
 }
