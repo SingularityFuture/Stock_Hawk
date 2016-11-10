@@ -7,6 +7,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -60,9 +61,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private BroadcastReceiver  BReceiver = new BroadcastReceiver(){
     @Override
     public void onReceive(Context context, Intent intent) {
-      int sentResult=intent.getIntExtra("result",0);
+      int sentResult=intent.getIntExtra(getString(R.string.result_col),0);
       if(sentResult==GcmNetworkManager.RESULT_FAILURE) {
-        Toast.makeText(getApplicationContext(), "Stock not found", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.stock_not_found, Toast.LENGTH_SHORT).show();
       }
     }
   };
@@ -85,7 +86,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     mServiceIntent = new Intent(this, StockIntentService.class);
     if (savedInstanceState == null){
       // Run the initialize task service so that some stocks appear upon an empty database
-      mServiceIntent.putExtra("tag", "init");
+      mServiceIntent.putExtra(getString(R.string.tag), getString(R.string.initialization));
       if (isConnected){
         startService(mServiceIntent);
       } else{
@@ -106,7 +107,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                           new String[] {Integer.toString(position+1)}, null);
                   c.moveToFirst();
                   symbol = c.getString(c.getColumnIndex(QuoteColumns.SYMBOL));
-                  Intent intent = new Intent(getApplicationContext(), StockDetailActivity.class).putExtra("ARG_SYMBOL", symbol);
+                  Intent intent = new Intent(getApplicationContext(), StockDetailActivity.class).putExtra(mContext.getString(R.string.arg_symbol), symbol);
                   startActivity(intent);
               }
             }));
@@ -129,15 +130,15 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                       new String[] { input.toString() }, null);
                   if (c.getCount() != 0) {
                     Toast toast =
-                        Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                        Toast.makeText(MyStocksActivity.this, R.string.already_saved,
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                     toast.show();
                     return;
                   } else {
                     // Add the stock to DB
-                    mServiceIntent.putExtra("tag", "add");
-                    mServiceIntent.putExtra("symbol", input.toString());
+                    mServiceIntent.putExtra(mContext.getString(R.string.tag), mContext.getString(R.string.add));
+                    mServiceIntent.putExtra(mContext.getString(R.string.symbol), input.toString());
                     startService(mServiceIntent);
                   }
                 }
@@ -158,7 +159,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     if (isConnected){
       long period = 3600L;
       long flex = 10L;
-      String periodicTag = "periodic";
+      String periodicTag = getString(R.string.periodic);
 
       // create a periodic task to pull stocks once every hour after the app has been opened. This
       // is so Widget data stays up to date.
@@ -181,7 +182,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public void onResume() {
     super.onResume();
     getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
-    LocalBroadcastManager.getInstance(this).registerReceiver(BReceiver, new IntentFilter("message"));
+    LocalBroadcastManager.getInstance(this).registerReceiver(BReceiver, new IntentFilter(getString(R.string.message)));
   }
 
   protected void onPause (){
@@ -241,13 +242,13 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
   @Override
   public void onLoadFinished(Loader<Cursor> loader, Cursor data){
-    mCursorAdapter.swapCursor(data);
+    mCursorAdapter.swapCursor(mContext, data);
     mCursor = data;
   }
 
   @Override
   public void onLoaderReset(Loader<Cursor> loader){
-    mCursorAdapter.swapCursor(null);
+    mCursorAdapter.swapCursor(mContext, null);
   }
 
 }

@@ -39,6 +39,7 @@ public class StockDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_detail);
+        Resources r = getResources();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -48,7 +49,7 @@ public class StockDetailActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(symbol);
 
         mChart = (LineChart) findViewById(R.id.chart);
-        mChart.setDescription(String.format(getResources().getString(R.string.chart_description), symbol));
+        mChart.setDescription(String.format(r.getString(R.string.chart_description), symbol));
 
         mChart.setTouchEnabled(false);
         mChart.setScaleEnabled(true);

@@ -1,6 +1,7 @@
 package com.sam_chordas.android.stockhawk.widget;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
@@ -32,7 +33,7 @@ public class StockWidgetRemoteViewsService extends RemoteViewsService {
                 final long identityToken = Binder.clearCallingIdentity();
 
                 data = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-                        new String[]{"Distinct " + QuoteColumns.SYMBOL,
+                        new String[]{getApplicationContext().getString(R.string.distinct) + QuoteColumns.SYMBOL,
                                 QuoteColumns.BIDPRICE,
                                 QuoteColumns.CHANGE,
                                 QuoteColumns.PERCENT_CHANGE,
@@ -63,23 +64,23 @@ public class StockWidgetRemoteViewsService extends RemoteViewsService {
 
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.list_item_quote);
 
-                views.setTextViewText(R.id.stock_symbol, data.getString(data.getColumnIndex("symbol")));
-                views.setTextViewText(R.id.bid_price, data.getString(data.getColumnIndex("bid_price")));
-                if (data.getInt(data.getColumnIndex("is_up")) == 1){
-                    views.setInt(R.id.change, "setBackgroundResource", R.drawable.percent_change_pill_green);
+                views.setTextViewText(R.id.stock_symbol, data.getString(data.getColumnIndex(getApplicationContext().getString(R.string.symbol))));
+                views.setTextViewText(R.id.bid_price, data.getString(data.getColumnIndex(getApplicationContext().getString(R.string.bid_pric))));
+                if (data.getInt(data.getColumnIndex(getApplicationContext().getString(R.string.is_up))) == 1){
+                    views.setInt(R.id.change, getString(R.string.background_resource), R.drawable.percent_change_pill_green);
                 } else {
-                    views.setInt(R.id.change, "setBackgroundResource", R.drawable.percent_change_pill_red);
+                    views.setInt(R.id.change, getString(R.string.background_resource), R.drawable.percent_change_pill_red);
                 }
 
                 if (Utils.showPercent) {
-                    views.setTextViewText(R.id.change, data.getString(data.getColumnIndex("percent_change")));
+                    views.setTextViewText(R.id.change, data.getString(data.getColumnIndex(getApplicationContext().getString(R.string.per_change))));
                 } else {
-                    views.setTextViewText(R.id.change, data.getString(data.getColumnIndex("change")));
+                    views.setTextViewText(R.id.change, data.getString(data.getColumnIndex(getApplicationContext().getString(R.string.change))));
                 }
 
                 final Intent fillInIntent = new Intent();
                 Uri uri = QuoteProvider.Quotes.CONTENT_URI;
-                fillInIntent.putExtra(StockDetailActivity.ARG_SYMBOL, data.getString(data.getColumnIndex("symbol")));
+                fillInIntent.putExtra(StockDetailActivity.ARG_SYMBOL, data.getString(data.getColumnIndex(getApplicationContext().getString(R.string.symbol))));
                 views.setOnClickFillInIntent(R.id.stock_list_item, fillInIntent);
 
 

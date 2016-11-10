@@ -1,9 +1,12 @@
 package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.support.v7.widget.RecyclerView;
+
+import com.sam_chordas.android.stockhawk.R;
 
 /**
  * Created by sam_chordas on 10/6/15.
@@ -20,7 +23,7 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
   public CursorRecyclerViewAdapter(Context context, Cursor cursor){
     mCursor = cursor;
     dataIsValid = cursor != null;
-    rowIdColumn = dataIsValid ? mCursor.getColumnIndex("_id") : -1;
+    rowIdColumn = dataIsValid ? mCursor.getColumnIndex(context.getString(R.string.id_tag)) : -1;
     mDataSetObserver = new NotifyingDataSetObserver();
     if (dataIsValid){
       mCursor.registerDataSetObserver(mDataSetObserver);
@@ -64,7 +67,7 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
     onBindViewHolder(viewHolder, mCursor);
   }
 
-  public Cursor swapCursor(Cursor newCursor){
+  public Cursor swapCursor(Context context, Cursor newCursor){
     if (newCursor == mCursor){
       return null;
     }
@@ -77,7 +80,7 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
       if (mDataSetObserver != null){
         mCursor.registerDataSetObserver(mDataSetObserver);
       }
-      rowIdColumn = newCursor.getColumnIndexOrThrow("_id");
+      rowIdColumn = newCursor.getColumnIndexOrThrow(context.getString(R.string.id_tag2));
       dataIsValid = true;
       notifyDataSetChanged();
     }else{

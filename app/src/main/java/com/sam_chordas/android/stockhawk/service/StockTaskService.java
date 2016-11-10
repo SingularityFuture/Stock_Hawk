@@ -6,6 +6,7 @@ import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
+import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.Utils;
@@ -64,22 +66,22 @@ public class StockTaskService extends GcmTaskService{
     StringBuilder urlStringBuilder = new StringBuilder();
     try{
       // Base URL for the Yahoo query
-      urlStringBuilder.append("https://query.yahooapis.com/v1/public/yql?q=");
-      urlStringBuilder.append(URLEncoder.encode("select * from yahoo.finance.quotes where symbol "
-        + "in (", "UTF-8"));
+      urlStringBuilder.append(mContext.getString(R.string.query_link));
+      urlStringBuilder.append(URLEncoder.encode(mContext.getString(R.string.select_query)
+        + mContext.getString(R.string.in_portion), mContext.getString(R.string.UTF_8)));
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     }
-    if (params.getTag().equals("init") || params.getTag().equals("periodic")){
+    if (params.getTag().equals(mContext.getString(R.string.initialization)) || params.getTag().equals(mContext.getString(R.string.periodic))){
       isUpdate = true;
       initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-          new String[] { "Distinct " + QuoteColumns.SYMBOL }, null,
+          new String[] { mContext.getString(R.string.distinct) + QuoteColumns.SYMBOL }, null,
           null, null);
       if (initQueryCursor.getCount() == 0 || initQueryCursor == null){
         // Init hltask. Populates DB with quotes for the symbols seen below
         try {
           urlStringBuilder.append(
-              URLEncoder.encode("\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")", "UTF-8"));
+              URLEncoder.encode(mContext.getString(R.string.stock_symbols), mContext.getString(R.string.UTF_8)));
         } catch (UnsupportedEncodingException e) {
           e.printStackTrace();
         }
@@ -88,29 +90,29 @@ public class StockTaskService extends GcmTaskService{
         initQueryCursor.moveToFirst();
         for (int i = 0; i < initQueryCursor.getCount(); i++){
           mStoredSymbols.append("\""+
-              initQueryCursor.getString(initQueryCursor.getColumnIndex("symbol"))+"\",");
+              initQueryCursor.getString(initQueryCursor.getColumnIndex(mContext.getString(R.string.symbol)))+"\",");
           initQueryCursor.moveToNext();
         }
         mStoredSymbols.replace(mStoredSymbols.length() - 1, mStoredSymbols.length(), ")");
         try {
-          urlStringBuilder.append(URLEncoder.encode(mStoredSymbols.toString(), "UTF-8"));
+          urlStringBuilder.append(URLEncoder.encode(mStoredSymbols.toString(), mContext.getString(R.string.UTF_8)));
         } catch (UnsupportedEncodingException e) {
           e.printStackTrace();
         }
       }
-    } else if (params.getTag().equals("add")){
+    } else if (params.getTag().equals(mContext.getString(R.string.add))){
       isUpdate = false;
       // get symbol from params.getExtra and build query
-      String stockInput = params.getExtras().getString("symbol");
+      String stockInput = params.getExtras().getString(mContext.getString(R.string.symbol));
       try {
-        urlStringBuilder.append(URLEncoder.encode("\""+stockInput+"\")", "UTF-8"));
+        urlStringBuilder.append(URLEncoder.encode("\""+stockInput+"\")", mContext.getString(R.string.UTF_8)));
       } catch (UnsupportedEncodingException e){
         e.printStackTrace();
       }
     }
     // finalize the URL for the API query.
-    urlStringBuilder.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."
-        + "org%2Falltableswithkeys&callback=");
+    urlStringBuilder.append(mContext.getString(R.string.json_diagnostics)
+        + mContext.getString(R.string.with_keys));
 
     String urlString;
     String getResponse;
@@ -131,12 +133,12 @@ public class StockTaskService extends GcmTaskService{
           }
           ContentProviderResult batchArray[];
           batchArray=mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
-              Utils.quoteJsonToContentVals(getResponse));
+              Utils.quoteJsonToContentVals(mContext,getResponse));
           if(batchArray.length==0){
             result = GcmNetworkManager.RESULT_FAILURE;
           }
         }catch (RemoteException | OperationApplicationException e){
-          Log.e(LOG_TAG, "Error applying batch insert", e);
+          Log.e(LOG_TAG, mContext.getString(R.string.error_batch_insert), e);
         }
       } catch (IOException e){
         e.printStackTrace();
